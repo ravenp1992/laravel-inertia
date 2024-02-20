@@ -19,6 +19,14 @@ let selectedProject = ref(null);
 function toggleCreateForm() {
     isCreating.value = !isCreating.value;
 }
+
+let form = useForm({});
+
+function deleteProject(id) {
+    if (confirm("Are you sure you want to delete?")) {
+        form.delete(route("projects.destroy", id));
+    }
+}
 </script>
 
 <template>
@@ -75,6 +83,7 @@ function toggleCreateForm() {
                                     </h3>
                                     <button
                                         class="text-gray-500 text-xs hover:text-red-500"
+                                        @click="deleteProject(project.id)"
                                     >
                                         X
                                     </button>

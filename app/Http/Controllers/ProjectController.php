@@ -5,13 +5,21 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
 use App\Models\Project;
+use App\Repositories\ProjectRepository;
 use Inertia\Inertia;
 
 class ProjectController extends Controller
 {
+    private ProjectRepository $repository;
+
+    public function __construct(ProjectRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function index()
     {
-        $projects = Project::query()->latest()->get();
+        $projects = $this->repository->latest();
 
         return Inertia::render('Project/Index', ['projects' => $projects]);
     }
@@ -23,40 +31,28 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
+        $project = $this->repository->findById($project->id);
+
         return Inertia::render('Project/Show', ['project' => $project]);
     }
 
     public function store(ProjectStoreRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-
-        Project::query()->create([
-            'name' => $request->name,
-            'description' => $request->description ?? null
-        ]);
+        $this->repository->create($request->only(['name', 'description']));
 
         return redirect()->route('projects.index');
     }
 
-    public function update(ProjectUpdateRequest $request, Project $project)
+    public function update(Project $project, ProjectUpdateRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255'
-        ]);
-
-        $project->update([
-            'name' => $request->name ?? $project->name,
-            'description' => $request->description ?? $project->description
-        ]);
+        $this->repository->update($project->id, $request->only(['name', 'description']));
 
         return redirect()->route('projects.index');
     }
 
-    public function delete(Project $project)
+    public function destroy(Project $project)
     {
-        $project->delete();
+        $this->repository->delete($project->id);
 
         return redirect()->route('projects.index');
     }
