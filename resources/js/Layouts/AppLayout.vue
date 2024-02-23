@@ -1,8 +1,13 @@
 <script setup>
 import { Link } from "@inertiajs/vue3";
+import { ref } from "vue";
+
+const selectedProject = ref("");
+
+const emit = defineEmits(["changeProject"]);
 </script>
 <template>
-    <div class="flex text-gray-900">
+    <div class="flex text-gray-700">
         <div class="bg-white">
             <nav
                 class="flex justify-start flex-col items-center bg-gray-900 min-h-full text-white"
@@ -18,12 +23,12 @@ import { Link } from "@inertiajs/vue3";
                 </Link>
             </nav>
         </div>
-        <main class="flex-1">
+        <div class="flex-1">
             <div
                 class="flex space-x-4 divide-x py-1.5 px-4 border items-center border-b-gray-100"
             >
                 <div class="min-w-40">
-                    <h1 class="text-sm font-bold text-gray-700 capitalize">
+                    <h1 class="text-sm font-bold capitalize">
                         {{ $page.props.auth.user.name }}
                     </h1>
                     <p class="text-xs font-semibold">
@@ -36,12 +41,23 @@ import { Link } from "@inertiajs/vue3";
                 </div>
                 <div class="flex justify-between items-center flex-1">
                     <div>
-                        <select class="text-xs border-none" name="" id="">
-                            <option value="1">Select Project</option>
-                            <option value="1">Project 1</option>
-                            <option value="1">Project 2</option>
-                            <option value="1">Project 3</option>
-                            <option value="1">Project 4</option>
+                        <select
+                            class="text-xs border-none outline-none focus:border-none focus:outline-none focus:ring-0"
+                            v-model="selectedProject"
+                            @change="emit('changeProject', selectedProject)"
+                        >
+                            <option value="">Select Project</option>
+                            <option
+                                v-for="project of $page.props.auth.user
+                                    .projects"
+                                :key="project.id"
+                                :value="project"
+                            >
+                                {{ project.name }}
+                            </option>
+                            <!-- <option value="1">Project 2</option> -->
+                            <!-- <option value="1">Project 3</option> -->
+                            <!-- <option value="1">Project 4</option> -->
                         </select>
                     </div>
                     <div class="space-x-4">
@@ -59,9 +75,10 @@ import { Link } from "@inertiajs/vue3";
                     </div>
                 </div>
             </div>
-            <div class="px-4 py-2 bg-gray-50 min-h-screen">
+
+            <main class="px-4 py-2 bg-gray-50 min-h-screen">
                 <slot></slot>
-            </div>
-        </main>
+            </main>
+        </div>
     </div>
 </template>

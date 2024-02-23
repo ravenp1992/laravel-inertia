@@ -1,5 +1,6 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
+import { ref, watch } from "vue";
 
 const props = defineProps({
     projects: {
@@ -7,11 +8,17 @@ const props = defineProps({
         default: [],
     },
 });
+
+const project = ref(null);
+
+watch(project, (newValue, oldValue) => {
+    console.log(newValue, oldValue);
+});
 </script>
 
 <template>
-    <AppLayout>
-        <div class="flex justify-between text-gray-500">
+    <AppLayout @change-project="(v) => (project = v)">
+        <div v-if="project" class="flex mt-8 justify-between text-gray-500">
             <h2 class="text-sm font-semibold text-gray-700">Tickets</h2>
 
             <div class="text-xs">

@@ -17,6 +17,10 @@ class ProjectSeeder extends Seeder
     {
         $this->truncate('projects');
 
-        Project::factory(10)->create();
+        $projects = Project::factory(10)->create();
+
+        $projects->each(function (Project $project) {
+            $project->users()->sync([1]);
+        });
     }
 }
