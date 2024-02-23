@@ -1,25 +1,34 @@
 <script setup>
 import { Link } from "@inertiajs/vue3";
-import { ref } from "vue";
 
-const selectedProject = ref("");
-
-const emit = defineEmits(["changeProject"]);
+const project = defineModel("project");
+const search = defineModel("search");
 </script>
 <template>
     <div class="flex text-gray-700">
         <div class="bg-white">
             <nav
-                class="flex justify-start flex-col items-center bg-gray-900 min-h-full text-white"
+                class="flex justify-start flex-col items-center bg-gray-900 min-h-full"
             >
-                <Link class="p-4" :href="route('dashboard')">
+                <Link
+                    :class="{
+                        'p-4': true,
+                        'text-white': route().current('dashboard'),
+                        'text-gray-500': !route().current('dashboard'),
+                    }"
+                    :href="route('dashboard')"
+                >
                     <v-icon class="h-6 w-6" name="fa-tachometer-alt"></v-icon>
                 </Link>
-                <Link :href="route('projects.index')">
-                    <v-icon
-                        class="text-gray-500 h-6 w-6"
-                        name="fa-tasks"
-                    ></v-icon>
+                <Link
+                    :href="route('projects.index')"
+                    :class="{
+                        'p-4': true,
+                        'text-white': route().current('projects.index'),
+                        'text-gray-500': !route().current('projects.index'),
+                    }"
+                >
+                    <v-icon class="h-6 w-6" name="fa-tasks"></v-icon>
                 </Link>
             </nav>
         </div>
@@ -41,10 +50,10 @@ const emit = defineEmits(["changeProject"]);
                 </div>
                 <div class="flex justify-between items-center flex-1">
                     <div>
+                        <!-- Need to create a reusable select component -->
                         <select
                             class="text-xs border-none outline-none focus:border-none focus:outline-none focus:ring-0"
-                            v-model="selectedProject"
-                            @change="emit('changeProject', selectedProject)"
+                            v-model="project"
                         >
                             <option value="">Select Project</option>
                             <option
@@ -55,9 +64,6 @@ const emit = defineEmits(["changeProject"]);
                             >
                                 {{ project.name }}
                             </option>
-                            <!-- <option value="1">Project 2</option> -->
-                            <!-- <option value="1">Project 3</option> -->
-                            <!-- <option value="1">Project 4</option> -->
                         </select>
                     </div>
                     <div class="space-x-4">
@@ -65,6 +71,7 @@ const emit = defineEmits(["changeProject"]);
                             class="text-xs focus:outline-none focus:ring-0 focus:border-b focus:border-gray-700 border-none outline-none"
                             type="search"
                             placeholder="Search Tasks"
+                            v-model="search"
                         />
                         <button class="group">
                             <v-icon

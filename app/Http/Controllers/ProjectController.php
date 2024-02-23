@@ -16,7 +16,10 @@ class ProjectController extends Controller
 
     public function index()
     {
-        $projects = $this->projectRepository->latest();
+        // $projects = $this->projectRepository->latest();
+
+        // need to refactor
+        $projects = Project::with('tickets')->get();
 
         return Inertia::render('Project/Index', ['projects' => $projects]);
     }
