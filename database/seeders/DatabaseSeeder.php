@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ProjectSeeder::class,
             TicketSeeder::class,
+            NoteSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();
 

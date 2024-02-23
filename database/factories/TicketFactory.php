@@ -19,6 +19,7 @@ class TicketFactory extends Factory
         return [
             'title' => $this->faker->word(),
             'description' => $this->faker->paragraph(),
+            'status' => $this->faker->randomElement(['backlog', 'inprogress', 'complete']),
             'project_id' => 1,
         ];
     }
