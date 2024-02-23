@@ -10,16 +10,13 @@ use Inertia\Inertia;
 
 class ProjectController extends Controller
 {
-    private ProjectRepository $repository;
-
-    public function __construct(ProjectRepository $repository)
+    public function __construct(private ProjectRepository $projectRepository)
     {
-        $this->repository = $repository;
     }
 
     public function index()
     {
-        $projects = $this->repository->latest();
+        $projects = $this->projectRepository->latest();
 
         return Inertia::render('Project/Index', ['projects' => $projects]);
     }
@@ -31,28 +28,28 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
-        $project = $this->repository->findById($project->id);
+        $project = $this->projectRepository->findById($project->id);
 
         return Inertia::render('Project/Show', ['project' => $project]);
     }
 
     public function store(ProjectStoreRequest $request)
     {
-        $this->repository->create($request->only(['name', 'description']));
+        $this->projectRepository->create($request->only(['name', 'description']));
 
         return redirect()->route('projects.index');
     }
 
     public function update(Project $project, ProjectUpdateRequest $request)
     {
-        $this->repository->update($project->id, $request->only(['name', 'description']));
+        $this->projectRepository->update($project->id, $request->only(['name', 'description']));
 
         return redirect()->route('projects.index');
     }
 
     public function destroy(Project $project)
     {
-        $this->repository->delete($project->id);
+        $this->projectRepository->delete($project->id);
 
         return redirect()->route('projects.index');
     }
