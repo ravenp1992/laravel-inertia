@@ -34,7 +34,7 @@ const search = defineModel("search");
         </div>
         <div class="flex-1">
             <div
-                class="flex space-x-4 divide-x py-1.5 px-4 border items-center border-b-gray-100"
+                class="flex space-x-4 divide-x-2 py-1.5 px-4 border items-center border-b-gray-100"
             >
                 <div class="min-w-40">
                     <h1 class="text-sm font-bold capitalize">
@@ -49,30 +49,32 @@ const search = defineModel("search");
                     </p>
                 </div>
                 <div class="flex justify-between items-center flex-1">
-                    <div>
-                        <!-- Need to create a reusable select component -->
-                        <select
-                            class="text-xs border-none outline-none focus:border-none focus:outline-none focus:ring-0"
-                            v-model="project"
-                        >
-                            <option value="">Select Project</option>
-                            <option
-                                v-for="project of $page.props.auth.user
-                                    .projects"
-                                :key="project.id"
-                                :value="project"
+                    <div class="flex justify-between w-full">
+                        <div class="px-4">
+                            <label class="text-xs font-bold">Project</label>
+                            <select
+                                class="text-xs border-none outline-none focus:border-none focus:outline-none focus:ring-0"
+                                v-model="project"
                             >
-                                {{ project.name }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="space-x-4">
+                                <option value="">Select Project</option>
+                                <option
+                                    v-for="project of $page.props.auth.user
+                                        .projects"
+                                    :key="project.id"
+                                    :value="project"
+                                >
+                                    {{ project.name }}
+                                </option>
+                            </select>
+                        </div>
                         <input
                             class="text-xs focus:outline-none focus:ring-0 focus:border-b focus:border-gray-700 border-none outline-none"
                             type="search"
                             placeholder="Search Tasks"
                             v-model="search"
                         />
+                    </div>
+                    <div class="space-x-4">
                         <button class="group">
                             <v-icon
                                 class="h-4 w-4 text-gray-500 group-hover:text-gray-700"
@@ -82,7 +84,6 @@ const search = defineModel("search");
                     </div>
                 </div>
             </div>
-
             <main class="px-4 py-2 bg-gray-50 min-h-screen">
                 <slot></slot>
             </main>

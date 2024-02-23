@@ -19,7 +19,7 @@ class ProjectController extends Controller
         // $projects = $this->projectRepository->latest();
 
         // need to refactor
-        $projects = Project::with('tickets')->get();
+        $projects = Project::with(['tickets.notes'])->get();
 
         return Inertia::render('Project/Index', ['projects' => $projects]);
     }

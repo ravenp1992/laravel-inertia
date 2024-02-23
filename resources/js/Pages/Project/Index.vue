@@ -1,5 +1,6 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
+import ProjectTicketCard from "./Components/ProjectTicketCard.vue";
 import { ref, watch, computed } from "vue";
 
 const props = defineProps({
@@ -66,23 +67,11 @@ watch(project, (newValue, oldValue) => {
                     Backlogs
                 </h2>
                 <div v-if="backlogTickets.length" class="mt-8 flex flex-col">
-                    <div
-                        class="py-2 border-b border-gray-500"
+                    <ProjectTicketCard
                         v-for="ticket of backlogTickets"
+                        :ticket="ticket"
                         :key="ticket"
-                    >
-                        <h3 class="text-sm font-bold">{{ ticket.title }}</h3>
-                        <p class="text-xs mt-1">{{ ticket.description }}</p>
-
-                        <div class="flex justify-end">
-                            <select
-                                class="text-xs border-none focus:border-none focus:ring-0"
-                            >
-                                <option value="inprogress">In Progress</option>
-                                <option value="completed">Complete</option>
-                            </select>
-                        </div>
-                    </div>
+                    />
                 </div>
             </div>
             <div class="border-4 border-dashed h-full p-4">
@@ -92,23 +81,11 @@ watch(project, (newValue, oldValue) => {
                     In Progress
                 </h2>
                 <div v-if="inProgressTickets.length" class="mt-8 flex flex-col">
-                    <div
-                        class="py-2 border-b border-gray-500"
+                    <ProjectTicketCard
                         v-for="ticket of inProgressTickets"
+                        :ticket="ticket"
                         :key="ticket"
-                    >
-                        <h3 class="text-sm font-bold">{{ ticket.title }}</h3>
-                        <p class="text-xs mt-1">{{ ticket.description }}</p>
-
-                        <div class="flex justify-end">
-                            <select
-                                class="text-xs border-none focus:border-none focus:ring-0"
-                            >
-                                <option value="inprogress">In Progress</option>
-                                <option value="completed">Complete</option>
-                            </select>
-                        </div>
-                    </div>
+                    />
                 </div>
             </div>
             <div class="border-4 border-dashed h-full p-4">
@@ -118,23 +95,11 @@ watch(project, (newValue, oldValue) => {
                     Completed
                 </h2>
                 <div v-if="completedTickets.length" class="mt-8 flex flex-col">
-                    <div
-                        class="py-2 border-b border-gray-500"
+                    <ProjectTicketCard
                         v-for="ticket of completedTickets"
+                        :ticket="ticket"
                         :key="ticket"
-                    >
-                        <h3 class="text-sm font-bold">{{ ticket.title }}</h3>
-                        <p class="text-xs mt-1">{{ ticket.description }}</p>
-
-                        <div class="flex justify-end">
-                            <select
-                                class="text-xs border-none focus:border-none focus:ring-0"
-                            >
-                                <option value="inprogress">In Progress</option>
-                                <option value="complete">Complete</option>
-                            </select>
-                        </div>
-                    </div>
+                    />
                 </div>
             </div>
         </div>
