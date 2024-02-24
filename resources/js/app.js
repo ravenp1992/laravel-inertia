@@ -13,6 +13,7 @@ import {
     FaTasks,
     FaCog,
     FaStickyNote,
+    FaPlus,
 } from "oh-vue-icons/icons";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
@@ -25,7 +26,7 @@ createInertiaApp({
             import.meta.glob("./Pages/**/*.vue"),
         ),
     setup({ el, App, props, plugin }) {
-        addIcons(FaHome, FaTachometerAlt, FaTasks, FaCog, FaStickyNote);
+        addIcons(FaHome, FaTachometerAlt, FaTasks, FaCog, FaStickyNote, FaPlus);
 
         return createApp({ render: () => h(App, props) })
             .use(plugin)

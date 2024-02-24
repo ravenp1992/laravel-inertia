@@ -1,73 +1,57 @@
 <script setup>
-import { Head, useForm } from "@inertiajs/vue3";
-import NavLink from "@/Components/NavLink.vue";
-import InputError from "@/Components/InputError.vue";
-import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-import TextArea from "@/Components/TextArea.vue";
-import { ref } from "vue";
+import Modal from "@/Components/Modal.vue";
+import TextInput from "@/Components/TextInput.vue";
+import { useForm } from "@inertiajs/vue3";
 
-let props = defineProps({
-    modelValue: Boolean,
-});
+const toggle = defineModel("toggle");
 
-let emit = defineEmits(["toggle:modelValue"]);
-
-const form = useForm({
+const createForm = useForm({
     name: "",
     description: "",
 });
 
-function submit() {
-    form.post(route("projects.store"), {
-        preserveScroll: true,
+const submit = () => {
+    createForm.post(route("projects.store"), {
         onSuccess: () => {
-            form.reset();
-            emit("toggle:modelValue", !props.modelValue);
+            close();
         },
     });
-}
+};
+
+const close = () => {
+    toggle.value = !toggle.value;
+};
 </script>
 
 <template>
-    <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-        <div class="flex justify-between items-center">
-            <h3>Create new Project For</h3>
-
-            <button
-                @click="emit('toggle:modelValue', !modelValue)"
-                class="hover:text-gray-900 text-gray-500 text-sm"
-            >
-                X
-            </button>
-        </div>
-
-        <!-- Refactor -> move to its own component -->
-        <form @submit.prevent="submit">
-            <div class="mt-4">
-                <InputLabel for="name" value="Title" />
-                <TextInput
-                    id="name"
-                    type="text"
-                    v-model="form.name"
-                    autofocus
-                />
-                <InputError class="mt-2" :message="form.errors.name" />
+    <section class="space-y-6">
+        <Modal :show="toggle" closeable @close="close">
+            <div class="p-6">
+                <div class="mt-6">
+                    <h2>Create New Project</h2>
+                    <form @submit.prevent="submit" class="mt-6 space-y-6">
+                        <div>
+                            <InputLabel for="name" value="Name" />
+                            <TextInput
+                                v-model="createForm.name"
+                                required
+                                autofocus
+                            />
+                        </div>
+                        <div>
+                            <InputLabel for="description" value="Description" />
+                            <TextInput v-model="createForm.description" />
+                        </div>
+                        <button
+                            type="submit"
+                            class="py-2 px-4 bg-blue-400 text-white hover:bg-blue-500"
+                        >
+                            Submit
+                        </button>
+                    </form>
+                </div>
             </div>
-            <div class="mt-4">
-                <InputLabel for="descriptiton" value="Description" />
-                <TextArea
-                    id="description"
-                    v-model="form.description"
-                ></TextArea>
-            </div>
-            <button
-                class="bg-blue-400 mt-4 text-white hover:bg-blue-500 px-4 py-2 disable:bg-gray-100 disable:text-gray-500"
-                type="submit"
-                :disabled="form.processing"
-            >
-                Submit
-            </button>
-        </form>
-    </div>
+        </Modal>
+    </section>
 </template>

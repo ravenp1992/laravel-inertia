@@ -49,8 +49,11 @@ const search = defineModel("search");
                     </p>
                 </div>
                 <div class="flex justify-between items-center flex-1">
-                    <div class="flex justify-between w-full">
-                        <div class="px-4">
+                    <div class="flex justify-between flex-1 items-center">
+                        <div
+                            class="px-4"
+                            v-show="route().current('projects.index')"
+                        >
                             <label class="text-xs font-bold">Project</label>
                             <select
                                 class="text-xs border-none outline-none focus:border-none focus:outline-none focus:ring-0"
@@ -68,6 +71,7 @@ const search = defineModel("search");
                             </select>
                         </div>
                         <input
+                            v-show="route().current('projects.index')"
                             class="text-xs focus:outline-none focus:ring-0 focus:border-b focus:border-gray-700 border-none outline-none"
                             type="search"
                             placeholder="Search Tasks"

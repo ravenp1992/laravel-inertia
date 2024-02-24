@@ -35,7 +35,7 @@ const completedTickets = computed(() => {
     return filteredTickets.value.filter((t) => t.status === "complete");
 });
 
-watch(project, (newValue, oldValue) => {
+watch(project, (newValue, _) => {
     tickets.value = project.value
         ? (tickets.value = props.projects.find((p) => p.id === newValue.id))
               .tickets

@@ -40,20 +40,20 @@ class ProjectController extends Controller
     {
         $this->projectRepository->create($request->only(['name', 'description']));
 
-        return redirect()->route('projects.index');
+        return redirect()->route('dashboard');
     }
 
     public function update(Project $project, ProjectUpdateRequest $request)
     {
         $this->projectRepository->update($project->id, $request->only(['name', 'description']));
 
-        return redirect()->route('projects.index');
+        return redirect()->route('dashboard');
     }
 
     public function destroy(Project $project)
     {
         $this->projectRepository->delete($project->id);
 
-        return redirect()->route('projects.index');
+        return redirect()->route('dashboard');
     }
 }

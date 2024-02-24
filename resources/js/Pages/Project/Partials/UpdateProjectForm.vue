@@ -1,37 +1,34 @@
 <script setup>
-import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import Modal from "@/Components/Modal.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { useForm } from "@inertiajs/vue3";
 
-let props = defineProps({
-    modelValue: Object | null,
-});
-
-let emit = defineEmits(["toggle:modelValue"]);
+const toggle = defineModel("toggle");
+const project = defineModel("project");
 
 const form = useForm({
-    name: props.modelValue.name,
-    description: props.modelValue.description,
+    name: project.value.name,
+    description: project.value.description,
 });
 
 const submit = () => {
-    form.patch(route("projects.update", props.modelValue), {
+    form.patch(route("projects.update", project.value.id), {
         onSuccess: () => {
-            emit("toggle:modelValue", null);
+            close();
         },
     });
+};
+
+const close = () => {
+    toggle.value = !toggle.value;
+    project.value = null;
 };
 </script>
 
 <template>
     <section class="space-y-6">
-        <Modal
-            :show="modelValue != null"
-            closeable
-            @close="emit('toggle:modelValue', null)"
-        >
+        <Modal :show="toggle" closeable @close="close">
             <div class="p-6">
                 <div class="mt-6">
                     <form @submit.prevent="submit" class="mt-6 space-y-6">
